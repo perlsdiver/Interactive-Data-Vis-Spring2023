@@ -4,6 +4,7 @@
 INSTRUCTIONS:
 Use this markdown file to keep track of open questions/challenges from this week's assignment.
 - What did you have trouble solving?
+## It took me a moment to get oriented and figure out the interface of doing it all. I have trouble with translating instructions to mental models and tend to need to learn through repeated process exposure (and often, through things failing/debugging).
 - What went easier than expected?
 - What, if anything, is currently blocking you?
 
