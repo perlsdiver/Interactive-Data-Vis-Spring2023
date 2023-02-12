@@ -7,79 +7,106 @@
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-  <h1>Hello World!</h1>
+  <h1>Hello Virtual World!</h1>
   <h3>Tutorial Assignment: 1_2_basic_html </h3>
-  <!-- <style>
-    .tbl { border-collapse: collapse; width:300px; }
-    .tbl th, .tbl td { padding: 5px; border: solid 1px #777; }
-    .tbl th { background-color: lightblue; }
-    .tbl-separate { border-collapse: separate; border-spacing: 5px;}
-  </style> -->
-  <!-- found the style from searching around online, and liked it -->
+  <p> This is a table I used to sort out my Spring schedule. I had a lot of freedom in choosing my classes. </p>
+  <img src = "https://foothill.edu/onlinelearning/images/FOL-class-schedule.png"
+  alt = "A picture I found on Google images. I like the owl.">
+  <style>
+    .tbl caption, .tbl th, .tbl td { padding: 1px; border: solid 1px #777; }
+    .tbl th { background-color: peru; }
+    .tbl caption { background-color: tomato}
+  </style>
   <table id="table1" class="tbl">
+    <caption>Spring 2023</caption>
     <tr>
       <th>Class</th>
       <th>Day</th>
       <th>Time</th>
+      <th>Frequency Taught</th>
       <th>Credits</th>
-      <th>Outcome</th>
+      <th>Status</th>
       <th>Note</th>
     </tr>
     <tr>
       <td>Writing the Article</td>
       <td>Monday</td>
       <td>2:00 PM</td>
+      <td>Every semester</td>
       <td>0</td>
       <td>Kept</td>
-      <td>Non-credit, low stakes; useful and practical</td>
+      <td>Non-credit, low stakes; useful and practical. I need to work on publishing.</td>
     </tr>
     <tr>
       <td>Interactive Technology and Pedagogy II</td>
       <td>Monday</td>
       <td>4:15 PM</td>
+      <td>Every Spring semester</td>
       <td>3</td>
       <td>Kept</td>
-      <td>Needed for ITP Certificate; focuses on project design and skills</td>
+      <td>Needed for ITP Certificate; focuses on project design and skills; need to learn more skills.</td>
     </tr>
     <tr>
       <td>Participatory Democracy and Social Movements</td>
       <td>Tuesday</td>
       <td>2:00 PM</td>
+      <td>Every Spring semester</td>
       <td>3</td>
       <td>Dropped</td>
       <td>Very interesting topic; PhD cohort peer is also taking; not as
-        relevant to immediate skills or knowledge needs</td>
+        relevant to immediate skills or knowledge needs. I may pop in for some sessions. Can take next year.</td>
     </tr>
     <tr>
       <td>Interactive Data Visualization</td>
       <td>Tuesday</td>
       <td>6:30 PM</td>
+      <td>Every semester</td>
       <td>3</td>
       <td>Kept</td>
-      <td>Was worried about skill prerequisite; seems manageable and will
-        teach new, hopefully useful skills</td>
+      <td>Was worried about skill prerequisite; seems manageable, and fun.
+        Nice way to learn something different; maybe I can use the skills in my ITP 
+        project or some of my research collaboration work.</td>
     </tr>
     <tr>
       <td>Critical Inquiries in Statistics and Quantification</td>
       <td>Thursday</td>
       <td>2:00 PM</td>
+      <td>Every other spring semester</td>
       <td>3</td>
       <td>Kept</td>
-      <td>Was a wildcard; I like the critical angle and need to some more stats literacy (even as
-        I dislike statistical reasoning and research design; only offered every other year</td>
+      <td>Was a wildcard when I registered, but seems very practical; I like the critical angle and need to some more 
+        stats literacy (even as I dislike statistical reasoning and research design in my own work).</td>
     </tr>
     <tr>
       <td>Critical Theory
       <td>Thursday</td>
       <td>6:30 PM</td>
+      <td>Every semester</td>
       <td>3</td>
       <td>Dropped</td>
       <td>Really want to stay in this class, but is very high reading load and less connected to
-        current research skills and needs. I will audit some of it</td>
+        current research skills and needs. With instructor's permission I will audit with minimal reading, 
+        not required to do any of the written assignments.</td>
     </tr>
   </table>
-  <svg>
-    <rect width="100" height="100" />
+
+  
+
+  <svg style="width:600px; height:300px">
+    <defs>
+      <linearGradient id="gradient" gradientTransform="rotate(90)">
+        <stop offset="5%"  stop-color="LightSteelBlue" />
+        <stop offset="30%"  stop-color="salmon" />
+        <stop offset="95%" stop-color="gold" />
+      </linearGradient>
+    </defs>
+    <rect fill="LightCoral" x="0" y="25" width="100" height ="200" rx = "10" ry = "10"/>
+    <rect fill="Thistle" x="100" y="40" width="800" height="50" />
+    <rect fill="PaleGreen" x="300" y="100" width="1000" height="25"/>
+    <rect fill="url('#gradient')" x="100" y="0" width="500" height="40"/>
+    <path d="M 10 10 C 20 20, 40 20, 50 10" stroke="black" fill="transparent"/>
   </svg>
+
+  <button type="button">Click here if you so desire</button>
 </body>
 </html>
