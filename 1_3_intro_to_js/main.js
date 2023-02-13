@@ -1,43 +1,9 @@
 console.log('hello world');
 
-// console.log(document)
-// console.log(window)
 
+function change(){
+    count++;
+    document.getElementById("count").innerHTML = count;
+   }
 
-const input = document.getElementById("name-input")
-// console.log(input)
-// console.log(document.getElementById("name-input"))
-const updateName = () => {
-    // console.log('in update function')
-    const userName = input.value;
-    window.alert('Hello ${userName}! Welcome to the contest.')
-}
-
-// updateName();
-
-let changeable = true
-let constant = true
-let counter = 0
-
-function change() {
-    changeable = false;
-    const constant = false;
-    // console.log(changeable, constant)
-    counter = counter + 1
-}
-
-// change();
-// change();
-// change
-// change
-// console.log('counter', counter)
-// console.log(changeable, constant)
-
-var count = 0;
-        var btn = document.getElementById("btn");
-        var disp = document.getElementById("display");
-          
-        btn.onclick = function () {
-            count++;
-            disp.innerHTML = count;
-        }
+// I gave up on replicating the name input into alert; couldn't get the sample script working
