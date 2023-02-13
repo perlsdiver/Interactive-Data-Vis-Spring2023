@@ -1,7 +1,9 @@
 console.log('hello world');
 
+// starting with count at 0
+count = 0;
 
-function change(){
+function countBtn(){
     count++;
     document.getElementById("count").innerHTML = count;
    }

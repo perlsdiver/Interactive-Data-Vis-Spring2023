@@ -1,6 +1,7 @@
 
 <!DOCTYPE html>
 <head>
+  <script src="https://d3js.org/d3.v6.min.js"></script>
   <meta charset="utf-8">
   <title>Interactive Data Visualization Tutorial</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro">
@@ -9,13 +10,11 @@
 <body>
   <h1>Hello, Virtual World!</h1>
   <h3>Tutorial Assignment: 1_3_intro_to_js </h3>
-  <!-- add any HTML you might need here, like a button or a div -->
   <style>
   .custom {padding:10px;background:rgb(128, 0, 58);color:white;}
   </style>
-  <button class="custom" onclick="change()">Click here</button>
+  <p>Number of clicks:</p><label id="count"></label><br><br>
+  <button class="custom" onclick="countBtn()">Click here</button>
   <script src="main.js"></script>
-  <div id = "count"> </div>
-  <p> Button click count: <span id="count"></span> </p>
 </body>
 </html>
