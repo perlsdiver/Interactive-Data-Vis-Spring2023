@@ -3,14 +3,14 @@ console.log('hello world');
 // console.log(document)
 // console.log(window)
 
+
 const input = document.getElementById("name-input")
 // console.log(input)
 // console.log(document.getElementById("name-input"))
 const updateName = () => {
     // console.log('in update function')
     const userName = input.value;
-    window.alert('Hello, welcome to class ${userName}')
-
+    window.alert('Hello ${userName}! Welcome to the contest.')
 }
 
 // updateName();
