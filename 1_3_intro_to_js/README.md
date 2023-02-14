@@ -12,7 +12,7 @@ The goals for this tutorial are:
   - [x] The page starts with 0 in the counter display. 
   - [x] The button runs an `onclick` function that updates the number in the counter.
   - **HINT:** you can either store the value in your javascript using `let`, or you can get the current value (`counter.innerText`) in order to add one to it. If you are getting a long string of numbers, check your [types](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#data_structures_and_types). 
-- [ ] Push these changes up to your forked repository. You should see your commit and any code changes in the github repo. Confirm that you see your changes in the deployed site. Follow the details outlined in the [deploy and submit below](#deploy--submit) to recieve credit.
+- [x] Push these changes up to your forked repository. You should see your commit and any code changes in the github repo. Confirm that you see your changes in the deployed site. Follow the details outlined in the [deploy and submit below](#deploy--submit) to recieve credit.
 
 **BONUS:**
 
