@@ -1,61 +1,76 @@
 
+// need to debug axis labels
+
 /* CONSTANTS AND GLOBALS */
-const width = window.innerWidth*.8;
+const width = window.innerWidth * 0.8;
 const height = 500;
 
 /* LOAD DATA */
 d3.csv('../data/squirrelActivities.csv', d3.autoType)
-
   .then(data => {
-
-    console.log("data", data)
+    console.log('data', data);
 
     /* SCALES */
+    // yscale - categorical, activity
+    const yScale = d3
+      .scaleBand()
+      .domain(data.map(d => d.activity))
+      .range([height, 0]) // visual variable
+      .paddingInner(0.2);
 
-    // x-scale - categorical, activity
-    
-    const xScale = d3.scaleBand()
-
-    .domain(data.map(d=>d.activity))
-
-    .range([0,width]) // visual variable
-
-    .paddingInner(.2)
-
-    // yscale - linear, count
-    
-    const yScale = d3.scaleLinear()
-
-    .domain([0,d3.max(data, d=>d.count)])
-
-    .range([height,0])
+    // xscale - linear, count
+    const xScale = d3
+      .scaleLinear()
+      .domain([0, d3.max(data, d => d.count)])
+      .range([0, width]);
 
     /* HTML ELEMENTS */
-    /** Select your container and append the visual elements to it */
-
     // svg
-
-    const svg = d3.select("#container")
-
-    .append("svg")
-
-    .attr("width", width)
-
-    .attr("height", height)
+    const svg = d3
+      .select('#container')
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height);
 
     // bars
+    svg
+      .selectAll('rect')
+      .data(data)
+      .join('rect')
+      .attr('width', d => xScale(d.count))
+      .attr('height', yScale.bandwidth())
+      .attr('x', 0)
+      .attr('y', d => yScale(d.activity));
 
-    svg.selectAll("rect")
+    // x axis
+    const xAxis = d3.axisBottom(xScale);
+    svg
+      .append('g')
+      .attr('transform', `translate(0,${height})`)
+      .call(xAxis);
 
-    .data(data)
+    // y axis
+    const yAxis = d3.axisLeft(yScale);
+    svg.append('g').call(yAxis);
 
-    .join("rect")
+ // axis labels
 
-    .attr("width",xScale.bandwidth())
+ // still debugging these
+ svg
+ .append('text')
+ .attr('class', 'x label')
+ .attr('text-anchor', 'end')
+ .attr('x', width)
+ .attr('y', height + 30)
+ .text('Count');
 
-    .attr("height",d=>height - yScale(d.count))
-
-    .attr("x",d=>xScale(d.activity))
-
-    .attr("y",d=>yScale(d.count))
-  })
+svg
+ .append('text')
+ .attr('class', 'y label')
+ .attr('text-anchor', 'middle')
+ .attr('x', -height/2)
+ .attr('y', -50)
+ .attr('dy', '.75em')
+ .attr('transform', 'rotate(-90)')
+ .text('Activity');
+  });
