@@ -4,7 +4,7 @@
 /* CONSTANTS AND GLOBALS */
 const width = window.innerWidth * 0.8;
 const height = 500;
-margin = { top: 20, bottom: 100, left: 120, right: 40 },
+ margin = { top: 20, bottom: 100, left: 150, right: 40 },
 
 /* LOAD DATA */
 d3.csv('../data/squirrelActivities.csv', d3.autoType)
@@ -59,15 +59,15 @@ d3.csv('../data/squirrelActivities.csv', d3.autoType)
  // still debugging these
  svg
  .append('text')
- .attr('class', 'x label')
- .attr('text-anchor', 'middle')
+ .attr("class", "x label")
+ .attr('text-anchor', 'end')
  .attr('x', width)
  .attr('y', height + 30)
  .text('Count');
 
 svg
  .append('text')
- .attr('class', 'y label')
+ .atrr("class", "y label")
  .attr('text-anchor', 'middle')
  .attr('x', -height/2)
  .attr('y', -50)

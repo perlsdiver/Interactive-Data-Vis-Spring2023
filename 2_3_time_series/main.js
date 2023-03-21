@@ -1,5 +1,5 @@
 // fixing areachart
-// import * as d3 from "d3";
+//import * as d3 from 'd3-shape';
 
 // const d3 = await import("d3")
 
@@ -92,19 +92,10 @@ function AreaChart(data, {
  height = window.innerHeight * 0.7,
  margin = { top: 20, bottom: 80, left: 120, right: 60 }
 
- 
-/* did not need this
-this extrapolated function allows us to replace the "G" with "B" min the case of billions.
-we cannot do this in the .tickFormat() because we need to pass a function as an argument,
-and replace needs to act on the text (result of the function).
-*/
-// const formatBillions = (num) => d3.format(".2s")(num).replace(/G/, 'B')
-// const formatDate = d3.timeFormat("%Y")
 
 /* LOAD DATA */
 d3.csv("../data/us_homeless_estimate.csv", d3.autoType).then((data) => {
   console.log(data);
-
 
  // x scale - linear, year
  const xScale = d3
@@ -183,10 +174,11 @@ svg
     .data([data]) // data needs to take an []
     .join("path")
     .attr("class", 'line')
-    .attr("fill", "")
+    .attr("fill", "none")
     .attr("stroke", "maroon")
     .attr("d", d => lineGen(d))
 
+    // I could not solve the area chart import, but am keeping the code here
    /* chart = AreaChart(data, {
       x: d => d.Year,
       y: d => d.Estimate,
@@ -194,23 +186,6 @@ svg
       width,
       height: 500,
       color: "steelblue"
-    }) */
-
- // use custom initializer to reformat the data the way we want it
- // ref: https://github.com/d3/d3-fetch#dsv
- //return {
- //  year: new Date(+d.Year, 0, 1),
- //  country: d.Entity,
- //  population: +d.Population
- 
-  // SCALES
-
-  // CREATE SVG ELEMENT
-
-  // BUILD AND CALL AXES
-
-  // LINE GENERATOR FUNCTION
-
-  // DRAW LINE
+    }) */ 
 
 });

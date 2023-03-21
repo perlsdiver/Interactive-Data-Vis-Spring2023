@@ -18,9 +18,9 @@ As you're building, don't forget you can always reference the [class code branch
 
 ## Assignment:
 
-- [ ] Implement your own line chart _with a different dataset_ than the one used in our demo. Your data should only create one line (given then next requirement). 
+- [x] Implement your own line chart _with a different dataset_ than the one used in our demo. Your data should only create one line (given then next requirement). 
 - [ ] Turn this line chart into an [area chart](https://github.com/d3/d3-shape#areas). **Tip**: Think first about how that would be drawn on the screen. What are you creating on the svg? This requires referencing the d3 documention to understand the similarities and differences between the area function generator and the line function generator.
-- [ ] Make intentional design decisions -- colors, sizes, axes, etc. should illustrate something interesting about or relevant to your data.
+- [x] Make intentional design decisions -- colors, sizes, axes, etc. should illustrate something interesting about or relevant to your data.
 
 **BONUS:**
 

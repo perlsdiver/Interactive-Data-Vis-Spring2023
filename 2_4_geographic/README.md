@@ -17,11 +17,11 @@ As you're building, don't forget you can always reference the [class code branch
 
 ## Assignment:
 
-- [ ] Implement your own version of the map, using the us state geojson data provided in the [data folder](../data/), or another geojson of your choice (feel free to pull in data of the world or of another country if you like).
+- [x] Implement your own version of the map, using the us state geojson data provided in the [data folder](../data/), or another geojson of your choice (feel free to pull in data of the world or of another country if you like).
 
-- [ ] Using your own lat/long dataset _OR_ the provided dataset for this exercise, [`usHeatExtremes.csv`](../data/usHeatExtremes.csv) (also in the [data folder](../data/)), add points to your map. **HINT:** since we're still in svg, we can just add circles to the map, like we've done before, but you'll need to use your `projection` to translate from (long,lat) values to (x,y) values.
+- [x] Using your own lat/long dataset _OR_ the provided dataset for this exercise, [`usHeatExtremes.csv`](../data/usHeatExtremes.csv) (also in the [data folder](../data/)), add points to your map. **HINT:** since we're still in svg, we can just add circles to the map, like we've done before, but you'll need to use your `projection` to translate from (long,lat) values to (x,y) values.
 
-- [ ] Make intentional design decisions -- colors, sizes, labels, etc. should illustrate something interesting about or relevant to your data.
+- [x] Make intentional design decisions -- colors, sizes, labels, etc. should illustrate something interesting about or relevant to your data.
 
 **BONUS:**
 
