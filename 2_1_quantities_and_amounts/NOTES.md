@@ -4,8 +4,16 @@
 INSTRUCTIONS:
 Use this markdown file to keep track of open questions/challenges from this week's assignment.
 - What did you have trouble solving?
+
+I had a hard time getting started, and feeling confident in my output.
+
 - What went easier than expected?
+
+Once I got into it, the task of rearranging the x and y axis orientation was not super difficult to figure out.
+
 - What, if anything, is currently blocking you?
+
+
 
 Sometimes it helps to formulate what you understood and where you got stuck in order to move forward. Feel free to include `code snippets`, `screenshots`, and `error message text` here as well.
 
