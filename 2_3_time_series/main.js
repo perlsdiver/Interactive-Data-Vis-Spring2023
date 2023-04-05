@@ -1,90 +1,4 @@
-// fixing areachart
-//import * as d3 from 'd3-shape';
-
-// const d3 = await import("d3")
-
-/*
-// Copyright 2021 Observable, Inc.
-// Released under the ISC license.
-// https://observablehq.com/@d3/area-chart
-function AreaChart(data, {
-  x = ([x]) => x, // given d in data, returns the (temporal) x-value
-  y = ([, y]) => y, // given d in data, returns the (quantitative) y-value
-  defined, // given d in data, returns true if defined (for gaps)
-  curve = d3.curveLinear, // method of interpolation between points
-  marginTop = 20, // top margin, in pixels
-  marginRight = 30, // right margin, in pixels
-  marginBottom = 30, // bottom margin, in pixels
-  marginLeft = 40, // left margin, in pixels
-  width = 640, // outer width, in pixels
-  height = 400, // outer height, in pixels
-  xType = d3.scaleUtc, // type of x-scale
-  xDomain, // [xmin, xmax]
-  xRange = [marginLeft, width - marginRight], // [left, right]
-  yType = d3.scaleLinear, // type of y-scale
-  yDomain, // [ymin, ymax]
-  yRange = [height - marginBottom, marginTop], // [bottom, top]
-  yFormat, // a format specifier string for the y-axis
-  yLabel, // a label for the y-axis
-  color = "currentColor" // fill color of area
-} = {}) {
-  // Compute values.
-  const X = d3.map(data, x);
-  const Y = d3.map(data, y);
-  const I = d3.range(X.length);
-
-  // Compute which data points are considered defined.
-  if (defined === undefined) defined = (d, i) => !isNaN(X[i]) && !isNaN(Y[i]);
-  const D = d3.map(data, defined);
-
-  // Compute default domains.
-  if (xDomain === undefined) xDomain = d3.extent(X);
-  if (yDomain === undefined) yDomain = [0, d3.max(Y)];
-
-  // Construct scales and axes.
-  const xScale = xType(xDomain, xRange);
-  const yScale = yType(yDomain, yRange);
-  const xAxis = d3.axisBottom(xScale).ticks(width / 80).tickSizeOuter(0);
-  const yAxis = d3.axisLeft(yScale).ticks(height / 40, yFormat);
-
-  // Construct an area generator.
-  const area = d3.area()
-      .defined(i => D[i])
-      .curve(curve)
-      .x(i => xScale(X[i]))
-      .y0(yScale(0))
-      .y1(i => yScale(Y[i]));
-
-  const svg = d3.create("svg")
-      .attr("width", width)
-      .attr("height", height)
-      .attr("viewBox", [0, 0, width, height])
-      .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
-
-  svg.append("g")
-      .attr("transform", `translate(${marginLeft},0)`)
-      .call(yAxis)
-      .call(g => g.select(".domain").remove())
-      .call(g => g.selectAll(".tick line").clone()
-          .attr("x2", width - marginLeft - marginRight)
-          .attr("stroke-opacity", 0.1))
-      .call(g => g.append("text")
-          .attr("x", -marginLeft)
-          .attr("y", 10)
-          .attr("fill", "currentColor")
-          .attr("text-anchor", "start")
-          .text(yLabel));
-
-  svg.append("path")
-      .attr("fill", color)
-      .attr("d", area(I));
-
-  svg.append("g")
-      .attr("transform", `translate(0,${height - marginBottom})`)
-      .call(xAxis);
-
-  return svg.node();
-} */
+// 4-4-23 - fixed area chart, plot now working
 
 
 /* CONSTANTS AND GLOBALS */
@@ -169,23 +83,30 @@ svg
     .y(d => yScale(d.Estimate))
 
     
+    const areaGen = d3.area()
+    .x(d => xScale(d.Year))
+    .y1(d => yScale(d.Estimate))
+    .y0(d => yScale(500000))
+
+
   // DRAW LINE
-  svg.selectAll(".line")
+
+  
+  // first, draw the area
+  svg.selectAll(".area")
+    .data([data])
+    .join("path")
+    .attr("class", 'area')
+    .attr("fill", "purple")
+    .attr("d", d => areaGen(d))
+
+  // then, draw the line
+    svg.selectAll(".line")
     .data([data]) // data needs to take an []
     .join("path")
     .attr("class", 'line')
     .attr("fill", "none")
-    .attr("stroke", "maroon")
+    .attr("stroke", "black")
     .attr("d", d => lineGen(d))
-
-    // I could not solve the area chart import, but am keeping the code here
-   /* chart = AreaChart(data, {
-      x: d => d.Year,
-      y: d => d.Estimate,
-      yLabel: "Estimated Homeless Population (in the US",
-      width,
-      height: 500,
-      color: "steelblue"
-    }) */ 
 
 });
