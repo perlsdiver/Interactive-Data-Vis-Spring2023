@@ -107,6 +107,7 @@ svg
     .attr("class", 'line')
     .attr("fill", "none")
     .attr("stroke", "black")
+    .attr("stroke-width", 5)
     .attr("d", d => lineGen(d))
 
 });
