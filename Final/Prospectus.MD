@@ -1,4 +1,4 @@
-##Prospectus
+## Prospectus
 
 *Title:*
 
@@ -21,15 +21,15 @@ Title:
 
 A Dynamic Map of Some NYC Housing Characteristics in the 2020 American Community Survey
 
-Topic:
+*Topic:*
 
 For my project, I'm visualizing a dynamic map of US Census data on housing characteristics in all 5 boroughs of NYC: plumbing facilities (kitchen and bathroom), and housing type. This will draw from multiple tables constructed from ACS Data.
 
-Research Question:
+*Research Question:*
 
 How is the built environment represented in Census data, what might this 'view' say about NYC, and what are the spatial distributions of “unusual” housing characteristics?
 
-Significance: 
+*Significance:*
 
 Visualizing this data on maps makes it seem more 'real' and less abstract. It offers a way of exploring space (and how the space of the Census) is constructed, as one aspect of measuring who lives within the geographic bounds of the United States. It then constructs a model on which government entities may feel compelled to act.
 
