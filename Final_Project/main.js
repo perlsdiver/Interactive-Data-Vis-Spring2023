@@ -1,9 +1,9 @@
 /* CONSTANTS AND GLOBALS */
 const width = window.innerWidth * 0.9,
-  height = window.innerHeight * 0.7,
+  height = window.innerHeight * 0.9,
   margin = { top: 20, bottom: 50, left: 60, right: 40 };
 
-  // Set the starting tab
+// Set the starting tab
 document.getElementById("Introduction").style.display = "block";
 document.querySelector(".tab button:first-child").classList.add("active");
 
@@ -25,107 +25,94 @@ document.querySelector(".tab button:first-child").classList.add("active");
     evt.currentTarget.className += " active";
   }
 
-// Create the SVG and the map projection
+// Creating the SVG and the map projection
 const svg = d3.select("#map")
   .attr("width", width)
   .attr("height", height);
-const tooltip = d3.select("#tooltip")
-  .append("div")
-  .attr("class", "tooltip")
-  .style("opacity", 0);
-  const colorScale = d3.scaleThreshold()
-  .domain([10, 20, 50, 100]) // Need to modify these values based on the data range
-  .range(["#fee5d9", "#fcae91", "#fb6a4a", "#de2d26", "#a50f15"]); // Modify these colors as desired
 
-/**
- * LOAD DATA
- * Using a Promise.all([]), we can load more than one dataset at a time
- * */
- Promise.all([
-  d3.json("../data/final/NYC_census_tracts_no_water.json"),
-  d3.csv("../data/final/ACSDT5Y2020.B25049-Data_Cleaned.csv", d3.autoType),
-]).then(([nycGeoJSON, censusPlumbing]) => {
-// Create a lookup table for CSV data using GEO_ID as key
-const csvLookup = new Map(censusPlumbing.map(d => [d.GEO_ID, d]));
+// Add a framing border around the map
+svg.append("rect")
+.attr("width", width)
+.attr("height", height)
+.attr("stroke", "black") // Border color
+.attr("stroke-width", "2px") // Border width
+.attr("fill", "none");
 
-// Iterate over the GeoJSON features and adding census data as a property
-nycGeoJSON.features.forEach(feature => {
-  const geoId = feature.properties.GEO_ID;
-  feature.properties.censusPlumbing = csvLookup.get(geoId);
-});
+  // Adding ability to zoom
+  const g = svg.append("g");
+
+  const zoom = d3.zoom()
+    .scaleExtent([0.75, 10])
+    .on('zoom', (event) => {
+      g.attr('transform', event.transform);
+    });
+  
+  svg.call(zoom);
+
+// loading data
+ d3.json("../data/final/CensusMerged.json")
+  .then(plumbingData => {
+
+// Add a dropdown to the page for selecting map options
+const mapOptions = [
+  { value: "none", label: "No Data" },
+  { value: "owner", label: "Owner Occupied: Lacking Plumbing" },
+  { value: "renter", label: "Renter Occupied: Lacking Plumbing" },
+];
+
+const dropdown = d3.select("#dropdown-container")
+  .append("select")
+  .attr("id", "map-option");
+
+dropdown.selectAll("option")
+  .data(mapOptions)
+  .enter()
+  .append("option")
+  .attr("value", d => d.value)
+  .text(d => d.label);
+
+// Update the map colors when the selected option changes
+dropdown.on("change", updateMapColors);
 
 // Defining the projection and path generator
-const projection = d3.geoMercator().fitSize([width, height], nycGeoJSON);
+const projection = d3.geoMercator().fitSize([width, height], plumbingData);
 const pathGenerator = d3.geoPath().projection(projection);
 
   // Render the map
-  svg.selectAll("path")
-    .data(nycGeoJSON.features)
+  g.selectAll("path")
+    .data(plumbingData.features)
     .enter()
     .append("path")
       .attr("d", pathGenerator)
       .attr("stroke", "black")
-      .attr("fill", "white"); 
+      .attr("fill", "#F5F5DC");
 
-  // Add event listeners
-  svg.selectAll("path")
-    .on("mouseover", showTooltip)
-    .on("mouseout", hideTooltip);
+  // Add event listeners (for tooltip)
+  g.selectAll("path")
+  .on("mouseover", (event, d) => showTooltip(event, d))
+  .on("mouseout", (event, d) => hideTooltip(event, d));
 
   // Update the map colors when the selected option changes
-  d3.select("#map-option").on("change", updateMapColors);
+  // d3.select("#map-option").on("change", updateMapColors);
+  // updateMapColors(censusPlumbing);
 });
 
-function updateMapColors() {
+function updateMapColors(plumbingData) {
   const selectedOption = d3.select("#map-option").node().value;
 
-  svg.selectAll("path")
-    .attr("fill", d => {
-      const censusPlumbing = d.properties.censusPlumbing;
+  const maxValue = d3.max(plumbingData.features, d => {
+    debugger;
+   // return some value....
+  return d['B25049_003E']
 
-      if (!censusPlumbing) {
-        return "white";
-      }
+});
 
-      if (selectedOption === "owner") {
-        return colorScale(censusPlumbing['B25049_003E']);
-      } else if (selectedOption === "renter") {
-        return colorScale(censusPlumbing['B25049_007E']);
-      } else {
-        return "white";
-      }
-    });
+// creating threshold for ranges
+const rangeThresholds = [0, 3, 9, 33, 64, 100, 250];
+
+
+
+
+
 }
 
-// adding the tooltip
-function showTooltip(d) {
-  const selectedOption = d3.select("#map-option").node().value;
-  const censusPlumbing = d.properties.censusPlumbing;
-
-  if (!censusPlumbing) {
-    return;
-  }
-
-  let text;
-  if (selectedOption === "owner") {
-    text = `Owner occupied lacking plumbing: ${censusPlumbing['B25049_003E']} households`;
-  } else if (selectedOption === "renter") {
-    text = `Renter occupied lacking plumbing: ${censusPlumbing['B25049_007E']} households`;
-  } else {
-    text = `Census Tract: ${censusPlumbing['NAME']}`;
-  }
-
-  tooltip.transition()
-    .duration(200)
-    .style("opacity", .9);
-
-  tooltip.html(text)
-    .style("left", (d3.event.pageX + 10) + "px")
-    .style("top", (d3.event.pageY - 28) + "px");
-}
-
-function hideTooltip() {
-  tooltip.transition()
-    .duration(500)
-    .style("opacity", 0);
-}

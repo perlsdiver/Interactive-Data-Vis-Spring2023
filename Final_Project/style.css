@@ -62,6 +62,10 @@ path.state {
   border-top: none;
 }
 
+#Visualizations {
+  display: none;
+}
+
 .tooltip {
   position: absolute;
   text-align: center;

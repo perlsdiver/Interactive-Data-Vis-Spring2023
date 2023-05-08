@@ -4,55 +4,81 @@
     <title>Interactive Data Visualization: Final Project</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" href="./style.css">
-    <link rel="stylesheet" href="https://fonts.google.com/specimen/Instrument+Serif">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap" rel="stylesheet">
   </head>
   <body style="background-color:#dcdcdc;">
+    <div class="banner">
+      <h1>Data 73200: Final Project    |    Ian Williams</h1>
+    </div>
+
+  <!- Here I created a series of tabs -->
     <div class="tab">
       <button class="tablinks" onclick="openTab(event, 'Reflection')">Reflection</button>
       <button class="tablinks" onclick="openTab(event, 'Visualizations')">Visualizations</button>
       <button class="tablinks" onclick="openTab(event, 'Overview')">Overview</button>
       <button class="tablinks" onclick="openTab(event, 'Introduction')">Introduction</button>
     </div>
-
+    <!- The introductory page -->
     <div id="Introduction" class="tabcontent">
       <h3>Introduction</h3>
-      <h3>Data 73200: Final Project</h3>
-      <h3>Ian Williams</h3>
       <h4> Interactive Map of US Census Bureau Data (American Community Survey): Select Housing Characteristics</h4>
       <h5> Table B25049</h5>
-
-
-      <p>Content for Introduction goes here.</p>  
+      <p>Welcome to my project. Please click and explore the tabs in order of left to right.</p>  
     </div>
   
+    <!- This is the narrative overview -->
     <div id="Overview" class="tabcontent">
-      <h3>Overview</h3>
-      <p>Content for Overview goes here.</p>
+      <h3>Instructions</h3>
+      <p>This website asks you, the viewer, to explore an interactive map of New York City. It invites you to imagine maps such as 
+        this as tools of urban governance. By governance I mean administration, management, and a general approach to the operation
+        of government (see more on Foucault and Rose for this). Information visualization is a practice central to administration of 
+        public data; visualizations render information into representations that can trigger action. It is thus important to consider how
+        and in what ways visualizations create impetus for action (or inaction).
+      </p>
+      <p>The map you will explore in the next tab ("Visualizations") depicts data from the US Census Bureau's American Community Survey, particularly
+        data on plumbing facilities, using the D3.JS library. Under the Housing Characteristics section of the survey, it reports whether a building has
+        adequate or inadequate plumbing facilities. This is sorted into owner-occupied and renter-occupied, and the available data is
+        organized at the level of Census tract. (ADD MORE ON TRACTS)
+      </p>
+      <p>Plumbing is an interesting question to look at because it is an aspect of "housing" that is often presumed or taken for granted. An article 
+        <a href = https://www.theguardian.com/us-news/2021/sep/27/water-almost-half-million-us-households-lack-indoor-plumbing>published in The Guardian in 2021</a>
+         described the phenomenon of "plumbing poverty" in the United States, where nearly half a million households lack adequate indoor plumbing. Although 
+         plumbing poverty has decreased in New York City, it is still significant. It is also a point of intersection between the built environment, housing, government 
+         administration, and social services. It can indicate a point at which "housing" is not adequate for modern standards, which could trigger administrative action 
+         such as building code inspections, child welfare investigations, or social service outreach, such as Adult Protective Services. 
+      </p>
+      <p>According to <a href=https://kclpure.kcl.ac.uk/portal/files/159767495/Plumbing_Poverty_in_US_Cities.pdf>a 2021 report by The Plumbing Poverty Project</a>, 
+        in New York City alone, 65,000 residents are estimated to not have access to piped water. As you explore the map, consider this, and what it might mean for 
+        people in New York.
+      </p>
     </div>
   
     <div id="Visualizations" class="tabcontent">
       <h3>Visualizations</h3>
-    <div id="container"></div>
-    <div id="container"> </div>
-    <div>
-      <select id="map-option">
-          <option value="">None</option>
-          <option value="owner">Owner occupied: Lacking plumbing facilities</option>
-          <option value="renter">Renter occupied: Lacking plumbing facilities</option>
-      </select>
-  </div>
+      <p>The following map allows you to explore a visual representation of NYC. It draws from Census data, organized by tract, that
+        indicates if an occupied building has adequate or inadequate plumbing. It is sorted into two possible maps - one marking
+        owner-occupied buidlings, and one marking renter-occupied buildings.</p>
+    <div id="dropdown-container"></div>
   <div>
-      <svg id="map" width="960" height="600"></svg>
+    <svg id="map" width="1200" height="1200"></svg>
   </div>
+  <div class="tooltip" style = "opacity: 0;"></div>
+  <br>
+  <br>
+  <div>
+    <svg id="bar-chart" width="960" height="500"></svg>
+</div>
   <h6> Data source: <a href=https://data.census.gov/table?q=Water,+Sewage,+and+Plumbing+Facilities&t=Owner/Renter+(Householder)+Characteristics&g=050XX00US36005$1400000,36047$1400000,36061$1400000,36081$1400000,36085$1400000&y=2020&tid=ACSDT5Y2020.B25049>US Census Bureau</a></h6>
 </div>
 
 <div id="Reflection" class="tabcontent">
   <h3>Reflection</h3>
-  <p>Content for Reflection goes here.</p>
+  <p>Please take a few minutes to fill out this reflection on the experience of this map. I will not share your answers outside of class.</p>
+  <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSf8Mfls9xbudsLhlRUCUc0DD8PLiU0VytRG6cXzf7_hYSxU6Q/viewform?embedded=true" width="640" height="769" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
 </div>
 
-  <div class="tooltip" style = "opacity: 0"></div>
+
     <script src="../lib/d3.js"></script>
     <script src="main.js"></script>
     <br>
