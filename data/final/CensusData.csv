@@ -1,4 +1,4 @@
-GEOID,Census Tract,County,State,Total:,Total Owner occupied:,Owner occupied: Complete plumbing facilities,Owner occupied: Lacking plumbing facilities,Total Renter occupied:,Renter occupied: Complete plumbing facilities,Renter occupied: Lacking plumbing facilities
+GEOID,Census_Tract,County,State,Total,Total_Owner,Owner_plumbing,Owner_no_plumbing,Total_Renter,Renter_plumbing,Renter_no_plumbing
 36005000100,Census Tract 1, Bronx,0,0,0,0,0,0,0,
 36005000200,Census Tract 2, Bronx, New York,1340,776,776,0,564,551,13,
 36005000400,Census Tract 4, Bronx, New York,2110,1549,1549,0,561,547,14,

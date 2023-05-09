@@ -8,6 +8,7 @@ document.getElementById("Introduction").style.display = "block";
 document.querySelector(".tab button:first-child").classList.add("active");
 
   function openTab(evt, tabName) {
+
     // Get all elements with class="tabcontent" and hide them
     const tabcontent = document.getElementsByClassName("tabcontent");
     for (let i = 0; i < tabcontent.length; i++) {
@@ -24,6 +25,13 @@ document.querySelector(".tab button:first-child").classList.add("active");
     document.getElementById(tabName).style.display = "block";
     evt.currentTarget.className += " active";
   }
+
+// loading data - multiple sets
+Promise.all([
+  d3.json("../data/final/CensusTracts.json"),
+  d3.csv("../data/final/CensusData.csv"),
+  d3.csv("../data/final/CensusDataBarChartSum.csv", d3.autType),
+]).then(([NYC_tracts, plumbingData, barData]) => {
 
 // Creating the SVG and the map projection
 const svg = d3.select("#map")
@@ -49,15 +57,11 @@ svg.append("rect")
   
   svg.call(zoom);
 
-// loading data
- d3.json("../data/final/CensusMerged.json")
-  .then(plumbingData => {
-
 // Add a dropdown to the page for selecting map options
 const mapOptions = [
   { value: "none", label: "No Data" },
-  { value: "owner", label: "Owner Occupied: Lacking Plumbing" },
-  { value: "renter", label: "Renter Occupied: Lacking Plumbing" },
+  { value: "Owner occupied: Lacking plumbing facilities", label: "Owner Occupied: Lacking Plumbing" },
+  { value: "Renter occupied: Lacking plumbing facilities", label: "Renter Occupied: Lacking Plumbing" },
 ];
 
 const dropdown = d3.select("#dropdown-container")
@@ -75,43 +79,86 @@ dropdown.selectAll("option")
 dropdown.on("change", updateMapColors);
 
 // Defining the projection and path generator
-const projection = d3.geoMercator().fitSize([width, height], plumbingData);
+const projection = d3.geoMercator().fitSize([width, height], NYC_tracts);
 const pathGenerator = d3.geoPath().projection(projection);
 
   // Render the map
   g.selectAll("path")
-    .data(plumbingData.features)
+    .data(NYC_tracts.features)
     .enter()
     .append("path")
       .attr("d", pathGenerator)
       .attr("stroke", "black")
       .attr("fill", "#F5F5DC");
 
-  // Add event listeners (for tooltip)
-  g.selectAll("path")
-  .on("mouseover", (event, d) => showTooltip(event, d))
-  .on("mouseout", (event, d) => hideTooltip(event, d));
-
-  // Update the map colors when the selected option changes
-  // d3.select("#map-option").on("change", updateMapColors);
-  // updateMapColors(censusPlumbing);
 });
 
 function updateMapColors(plumbingData) {
   const selectedOption = d3.select("#map-option").node().value;
 
   const maxValue = d3.max(plumbingData.features, d => {
-    debugger;
    // return some value....
-  return d['B25049_003E']
+  return d['Owner occupied: Lacking plumbing facilities']
 
 });
 
 // creating threshold for ranges
 const rangeThresholds = [0, 3, 9, 33, 64, 100, 250];
 
+// set the dimensions and margins of the bar chart
+const margin = {top: 30, right: 30, bottom: 70, left: 60},
+    width = 460 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
 
+// append the svg object to the body of the page
+const barsvg = d3.select("#bar-chart")
+  .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", `translate(${margin.left},${margin.top})`);
 
+// Initialize the X axis
+const x = d3.scaleBand()
+  .range([ 0, width ])
+  .padding(0.2);
+const xAxis = barsvg.append("g")
+  .attr("transform", `translate(0,${height})`)
+
+// Initialize the Y axis
+const y = d3.scaleLinear()
+  .range([ height, 0]);
+const yAxis = svg.append("g")
+  .attr("class", "myYaxis")
+
+// A function that create / update the plot for a given variable:
+function update(data) {
+
+  // Update the X axis
+  x.domain(data.map(d => d.group))
+  xAxis.call(d3.axisBottom(x))
+
+  // Update the Y axis
+  y.domain([0, d3.max(data, d => d.value) ]);
+  yAxis.transition().duration(1000).call(d3.axisLeft(y));
+
+  // Create the u variable
+  var u = barsvg.selectAll("rect")
+    .data(data)
+
+  u
+    .join("rect") // Add a new rect for each new elements
+    .transition()
+    .duration(1000)
+      .attr("x", d => x(d.group))
+      .attr("y", d => y(d.value))
+      .attr("width", x.bandwidth())
+      .attr("height", d => height - y(d.value))
+      .attr("fill", "#69b3a2")
+}
+
+// Initialize the plot with the first dataset#
+update(barData)
 
 
 }

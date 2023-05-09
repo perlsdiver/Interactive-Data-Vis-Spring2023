@@ -15,7 +15,7 @@
   <!- Here I created a series of tabs -->
     <div class="tab">
       <button class="tablinks" onclick="openTab(event, 'Reflection')">Reflection</button>
-      <button class="tablinks" onclick="openTab(event, 'Visualizations')">Visualizations</button>
+      <button class="tablinks" onclick="openTab(event, 'Map')">Map</button>
       <button class="tablinks" onclick="openTab(event, 'Overview')">Overview</button>
       <button class="tablinks" onclick="openTab(event, 'Introduction')">Introduction</button>
     </div>
@@ -50,12 +50,20 @@
       </p>
       <p>According to <a href=https://kclpure.kcl.ac.uk/portal/files/159767495/Plumbing_Poverty_in_US_Cities.pdf>a 2021 report by The Plumbing Poverty Project</a>, 
         in New York City alone, 65,000 residents are estimated to not have access to piped water. As you explore the map, consider this, and what it might mean for 
-        people in New York.
+        people in New York. See the bar chart below for summary representation of this data in a bar chart. You can click on the buttons to toggle between owner-occupied 
+        and renter-occupied housing units.
       </p>
+      <br>
+      <br>
+      <button onclick="update(data1)">Owner-Occupied Housing</button>
+      <button onclick="update(data2)">Renter-Occupied Housing</button>
+      <div>
+        <svg id="bar-chart" width="960" height="500"></svg>
+    </div>
     </div>
   
-    <div id="Visualizations" class="tabcontent">
-      <h3>Visualizations</h3>
+    <div id="Map" class="tabcontent">
+      <h3>Map</h3>
       <p>The following map allows you to explore a visual representation of NYC. It draws from Census data, organized by tract, that
         indicates if an occupied building has adequate or inadequate plumbing. It is sorted into two possible maps - one marking
         owner-occupied buidlings, and one marking renter-occupied buildings.</p>
@@ -66,16 +74,13 @@
   <div class="tooltip" style = "opacity: 0;"></div>
   <br>
   <br>
-  <div>
-    <svg id="bar-chart" width="960" height="500"></svg>
-</div>
   <h6> Data source: <a href=https://data.census.gov/table?q=Water,+Sewage,+and+Plumbing+Facilities&t=Owner/Renter+(Householder)+Characteristics&g=050XX00US36005$1400000,36047$1400000,36061$1400000,36081$1400000,36085$1400000&y=2020&tid=ACSDT5Y2020.B25049>US Census Bureau</a></h6>
 </div>
 
 <div id="Reflection" class="tabcontent">
   <h3>Reflection</h3>
   <p>Please take a few minutes to fill out this reflection on the experience of this map. I will not share your answers outside of class.</p>
-  <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSf8Mfls9xbudsLhlRUCUc0DD8PLiU0VytRG6cXzf7_hYSxU6Q/viewform?embedded=true" width="640" height="769" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+  <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSf8Mfls9xbudsLhlRUCUc0DD8PLiU0VytRG6cXzf7_hYSxU6Q/viewform?embedded=true" width="700" height="780" frameborder="1" marginheight="0" marginwidth="0">Loading…</iframe>
 </div>
 
 
