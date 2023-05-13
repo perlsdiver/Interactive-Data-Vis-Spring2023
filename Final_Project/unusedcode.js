@@ -13,6 +13,17 @@ const tooltip = d3.select("#tooltip")
   .range(["#fee5d9", "#fcae91", "#fb6a4a", "#de2d26", "#a50f15"]); // *** Modify these colors
 
 
+  // Add event listeners (for tooltip - need to add tooltip)
+  g.selectAll("path")
+  .on("mouseover", (event, d) => showTooltip(event, d))
+  .on("mouseout", (event, d) => hideTooltip(event, d));
+
+  // Update the map colors when the selected option changes
+  // d3.select("#map-option").on("change", updateMapColors);
+  // updateMapColors(censusPlumbing);
+
+
+
 colorScale.domain([0, maxValue]);
 
 
@@ -70,6 +81,21 @@ tooltip.transition()
   .style("opacity", 0);
 }
 
+
+// Update the map colors when the selected option changes
+dropdown.on("change", updateMapColors);
+
+
+
+// trying to update the map colors
+function updateMapColors(plumbingData) {
+    const selectedOption = d3.select("#map-option").node().value;
+  
+    const maxValue = d3.max(plumbingData.features, d => {
+     // return some value....
+    return d['Owner_no_plumbing']
+  
+  });
 
 
 
@@ -151,3 +177,64 @@ categories.forEach((category, i) => {
     .attr("y", legendRectSize - legendSpacing)
     .text(category);
 });
+
+
+
+
+// creating threshold for ranges
+const rangeThresholds = [0, 3, 9, 33, 64, 100, 250];
+
+
+// append the svg object to the body of the page
+const barsvg = d3.select("#bar-chart")
+  .append("barsvg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", `translate(${margin.left},${margin.top})`);
+
+// Initialize the X axis
+const x = d3.scaleBand()
+  .range([ 0, width ])
+  .padding(0.2);
+const xAxis = barsvg.append("g")
+  .attr("transform", `translate(0,${height})`)
+
+// Initialize the Y axis
+const y = d3.scaleLinear()
+  .range([ height, 0]);
+const yAxis = barsvg.append("g")
+  .attr("class", "myYaxis")
+
+// A function that create / update the plot for a given variable:
+function update(data) {
+
+  // Update the X axis
+  x.domain(data.map(d => d.group))
+  xAxis.call(d3.axisBottom(x))
+
+  // Update the Y axis
+  y.domain([0, d3.max(data, d => d.value) ]);
+  yAxis.transition().duration(1000).call(d3.axisLeft(y));
+
+  // Create the u variable
+  var u = barsvg.selectAll("rect")
+    .data(data)
+
+  u
+    .join("rect") // Add a new rect for each new elements
+    .transition()
+    .duration(1000)
+      .attr("x", d => x(d.group))
+      .attr("y", d => y(d.value))
+      .attr("width", x.bandwidth())
+      .attr("height", d => height - y(d.value))
+      .attr("fill", "#69b3a2")
+}
+
+// Initialize the plot with the first dataset#
+update(barData)
+
+
+
+

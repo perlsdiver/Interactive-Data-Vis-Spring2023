@@ -1,7 +1,15 @@
+/// Going to annotate this more so I break it apart and make it more legible for me
+///
+///
+
 /* CONSTANTS AND GLOBALS */
 const width = window.innerWidth * 0.9,
   height = window.innerHeight * 0.9,
   margin = { top: 20, bottom: 50, left: 60, right: 40 };
+
+/////////////
+/// TABS ///
+////////////
 
 // Set the starting tab
 document.getElementById("Introduction").style.display = "block";
@@ -26,36 +34,136 @@ document.querySelector(".tab button:first-child").classList.add("active");
     evt.currentTarget.className += " active";
   }
 
-// loading data - multiple sets
+/** these variables allow us to access anything we manipulate in
+* init() but need access to in draw().
+* All these variables are empty before we assign something to them.*/
+// let barsvg;
+// let mapsvg;
+
+//////////////////////////
+/// APPLICATION STATE ////
+/////////////////////////
+
+// let state = {
+//   NYC_tracts: null,
+//   plumbingData: null,
+//   barDat: null,
+//   hover:{
+//   },
+// };
+
+//////////////////////////////////// ////////////////// 
+// loading data - multiple sets ////
+///////////////////////////////////////////////////////
+
 Promise.all([
-  d3.json("../data/final/CensusTracts.json"),
-  d3.csv("../data/final/CensusData.csv"),
-  d3.csv("../data/final/CensusDataBarChartSum.csv", d3.autType),
+  d3.json("../data/final/CensusTracts.json"), // json file taken from NYC Open Data
+  d3.csv("../data/final/CensusData.csv"), // census data, wrangled to be easier to read
+  d3.csv("../data/final/CensusDataBarChartSum.csv", d3.autType), // seperate file made of borough-level summary data, making it easier to render bar charts
 ]).then(([NYC_tracts, plumbingData, barData]) => {
 
+// ////////////////  
+// // BAR CHART (not working - commented out for now ///
+// ///////////////
+
+// // append the svg object to the body of the page
+// var barsvg = d3.select("#bar-chart")
+//   .append("barsvg")
+//     .attr("width", width + margin.left + margin.right)
+//     .attr("height", height + margin.top + margin.bottom)
+//   .append("g")
+//     .attr("transform",
+//           "translate(" + margin.left + "," + margin.top + ")");
+
+// // Parse the Data (not sure if I'm doing this right)
+// d3.csv(barData, function(data) {
+
+//   // List of subgroups = header of the csv files = soil condition here
+//   var subgroups = data.columns.slice(1)
+
+//   // List of groups = species here = value of the first column called group -> I show them on the X axis
+//   var groups = d3.map(data, function(d){return(d.group)}).keys()
+
+//   // Add X axis
+//   var x = d3.scaleBand()
+//       .domain(groups)
+//       .range([0, width])
+//       .padding([0.2])
+//   barsvg.append("g")
+//     .attr("transform", "translate(0," + height + ")")
+//     .call(d3.axisBottom(x).tickSize(0));
+
+//   // Add Y axis
+//   var y = d3.scaleLinear()
+//     .domain([0, 250])
+//     .range([ height, 0 ]);
+//   barsvg.append("g")
+//     .call(d3.axisLeft(y));
+
+//   // Another scale for subgroup position?
+//   var xSubgroup = d3.scaleBand()
+//     .domain(subgroups)
+//     .range([0, x.bandwidth()])
+//     .padding([0.05])
+
+//   // color palette = one color per subgroup
+//   var color = d3.scaleOrdinal()
+//     .domain(subgroups)
+//     .range(['#e41a1c','#377eb8'])
+
+//   // Show the bars
+//   barsvg.append("g")
+//     .selectAll("g")
+//     // Enter in data = loop group per group
+//     .data(barData)
+//     .enter()
+//     .append("g")
+//       .attr("transform", function(d) { return "translate(" + x(d.group) + ",0)"; })
+//     .selectAll("rect")
+//     .data(function(d) { return subgroups.map(function(key) { return {key: key, value: d[key]}; }); })
+//     .enter().append("rect")
+//       .attr("x", function(d) { return xSubgroup(d.key); })
+//       .attr("y", function(d) { return y(d.value); })
+//       .attr("width", xSubgroup.bandwidth())
+//       .attr("height", function(d) { return height - y(d.value); })
+//       .attr("fill", function(d) { return color(d.key); });
+
+// })
+
+
+
+/// ORIGINAL MAP VERSION
+/// static map worked but could not make it dynamic nor effectively toggle data
+///
+
+/////////
+// MAP //
+/////////
+
 // Creating the SVG and the map projection
-const svg = d3.select("#map")
+const mapsvg = d3.select("#map")
   .attr("width", width)
   .attr("height", height);
 
 // Add a framing border around the map
-svg.append("rect")
+mapsvg.append("rect")
 .attr("width", width)
 .attr("height", height)
 .attr("stroke", "black") // Border color
 .attr("stroke-width", "2px") // Border width
 .attr("fill", "none");
 
-  // Adding ability to zoom
-  const g = svg.append("g");
+ // creating 'g' for the map image
+  const g = mapsvg.append("g");
 
+   // Adding ability to zoom
   const zoom = d3.zoom()
     .scaleExtent([0.75, 10])
     .on('zoom', (event) => {
       g.attr('transform', event.transform);
     });
   
-  svg.call(zoom);
+  mapsvg.call(zoom);
 
 // Add a dropdown to the page for selecting map options
 const mapOptions = [
@@ -75,9 +183,6 @@ dropdown.selectAll("option")
   .attr("value", d => d.value)
   .text(d => d.label);
 
-// Update the map colors when the selected option changes
-dropdown.on("change", updateMapColors);
-
 // Defining the projection and path generator
 const projection = d3.geoMercator().fitSize([width, height], NYC_tracts);
 const pathGenerator = d3.geoPath().projection(projection);
@@ -90,76 +195,5 @@ const pathGenerator = d3.geoPath().projection(projection);
       .attr("d", pathGenerator)
       .attr("stroke", "black")
       .attr("fill", "#F5F5DC");
-
+/////
 });
-
-function updateMapColors(plumbingData) {
-  const selectedOption = d3.select("#map-option").node().value;
-
-  const maxValue = d3.max(plumbingData.features, d => {
-   // return some value....
-  return d['Owner occupied: Lacking plumbing facilities']
-
-});
-
-// creating threshold for ranges
-const rangeThresholds = [0, 3, 9, 33, 64, 100, 250];
-
-// set the dimensions and margins of the bar chart
-const margin = {top: 30, right: 30, bottom: 70, left: 60},
-    width = 460 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
-
-// append the svg object to the body of the page
-const barsvg = d3.select("#bar-chart")
-  .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", `translate(${margin.left},${margin.top})`);
-
-// Initialize the X axis
-const x = d3.scaleBand()
-  .range([ 0, width ])
-  .padding(0.2);
-const xAxis = barsvg.append("g")
-  .attr("transform", `translate(0,${height})`)
-
-// Initialize the Y axis
-const y = d3.scaleLinear()
-  .range([ height, 0]);
-const yAxis = svg.append("g")
-  .attr("class", "myYaxis")
-
-// A function that create / update the plot for a given variable:
-function update(data) {
-
-  // Update the X axis
-  x.domain(data.map(d => d.group))
-  xAxis.call(d3.axisBottom(x))
-
-  // Update the Y axis
-  y.domain([0, d3.max(data, d => d.value) ]);
-  yAxis.transition().duration(1000).call(d3.axisLeft(y));
-
-  // Create the u variable
-  var u = barsvg.selectAll("rect")
-    .data(data)
-
-  u
-    .join("rect") // Add a new rect for each new elements
-    .transition()
-    .duration(1000)
-      .attr("x", d => x(d.group))
-      .attr("y", d => y(d.value))
-      .attr("width", x.bandwidth())
-      .attr("height", d => height - y(d.value))
-      .attr("fill", "#69b3a2")
-}
-
-// Initialize the plot with the first dataset#
-update(barData)
-
-
-}
-

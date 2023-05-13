@@ -9,11 +9,12 @@
   </head>
   <body style="background-color:#dcdcdc;">
     <div class="banner">
-      <h1>Data 73200: Final Project    |    Ian Williams</h1>
+      <h1>Data 73200: Final Project</h1>
     </div>
 
   <!- Here I created a series of tabs -->
     <div class="tab">
+      <button class="tablinks" onclick="openTab(event, 'References')">References</button>
       <button class="tablinks" onclick="openTab(event, 'Reflection')">Reflection</button>
       <button class="tablinks" onclick="openTab(event, 'Map')">Map</button>
       <button class="tablinks" onclick="openTab(event, 'Overview')">Overview</button>
@@ -22,31 +23,36 @@
     <!- The introductory page -->
     <div id="Introduction" class="tabcontent">
       <h3>Introduction</h3>
-      <h4> Interactive Map of US Census Bureau Data (American Community Survey): Select Housing Characteristics</h4>
-      <h5> Table B25049</h5>
-      <p>Welcome to my project. Please click and explore the tabs in order of left to right.</p>  
+      <h4>Interactive Data Visualization | Spring 2023</h4>
+      <h4>Ian G. Williams</h4>
+      <p>Welcome to my project. Please click and explore the tabs in order of left to right.</p
+      <br>
+      <div style="text-align: center;">
+      <img src="../data/final/Standard Plumbing Fixtures -1920'sB.jpg" alt="Standard Fixture Plumbing (source: Internet Archive">  
+      </div>
     </div>
   
     <!- This is the narrative overview -->
     <div id="Overview" class="tabcontent">
       <h3>Instructions</h3>
       <p>This website asks you, the viewer, to explore an interactive map of New York City. It invites you to imagine maps such as 
-        this as tools of urban governance. By governance I mean administration, management, and a general approach to the operation
-        of government (see more on Foucault and Rose for this). Information visualization is a practice central to administration of 
-        public data; visualizations render information into representations that can trigger action. It is thus important to consider how
-        and in what ways visualizations create impetus for action (or inaction).
+        this as tools of urban governmentality. By this term I mean administration, management, and a general approach to the operation
+        of government as forms of population management(Rose et al, 2006). Information visualization is a practice central to administration of public data; visualizations render information into representations that can trigger action. It is thus important to consider how
+        and in what ways visualizations create impetus for action (or inaction). Data visualizations are inherently political (Boenhert, 2016).
       </p>
-      <p>The map you will explore in the next tab ("Visualizations") depicts data from the US Census Bureau's American Community Survey, particularly
+      <p>The map you will explore in the next tab ("Map") depicts data from the US Census Bureau's American Community Survey 2015-2020 Five Year Estimates, particularly
         data on plumbing facilities, using the D3.JS library. Under the Housing Characteristics section of the survey, it reports whether a building has
         adequate or inadequate plumbing facilities. This is sorted into owner-occupied and renter-occupied, and the available data is
-        organized at the level of Census tract. (ADD MORE ON TRACTS)
+        organized at the level of Census tract. Tracts are the build block of Census geographic data, adopted in 1940 (US Census Bureau, n.d.).
       </p>
-      <p>Plumbing is an interesting question to look at because it is an aspect of "housing" that is often presumed or taken for granted. An article 
-        <a href = https://www.theguardian.com/us-news/2021/sep/27/water-almost-half-million-us-households-lack-indoor-plumbing>published in The Guardian in 2021</a>
-         described the phenomenon of "plumbing poverty" in the United States, where nearly half a million households lack adequate indoor plumbing. Although 
-         plumbing poverty has decreased in New York City, it is still significant. It is also a point of intersection between the built environment, housing, government 
-         administration, and social services. It can indicate a point at which "housing" is not adequate for modern standards, which could trigger administrative action 
-         such as building code inspections, child welfare investigations, or social service outreach, such as Adult Protective Services. 
+      <p>Plumbing is an interesting question to look at because it is an aspect of "housing" that is often presumed or taken for granted. The buildings marked in
+        this data set are occupied, yet do not have adquate plumbing. An article<a href = https://www.theguardian.com/us-news/2021/sep/27/water-almost-half-million-us-households-lack-indoor-plumbing>
+          published in The Guardian in 2021</a> described the phenomenon of "plumbing poverty" in the United States, where nearly half a million households lack adequate
+          indoor plumbing. Although plumbing poverty has decreased in New York City, it is still significant. It is also a point of intersection between the built environment, 
+          housing, government administration, and social services. Under NYC housing code, it is required that landlords provide functioning water systems and plumbing to tenants 
+          (NYC Department of Housing Preservation and Develompent, 2021). A lack of plumbing, in addition to violations of city code, can indicate a point at which "housing" is not 
+          adequate for modern standards, which could trigger administrative action such as building code inspections, child welfare investigations, or social service outreach, 
+          such as Adult Protective Services. It could also be a flashpoint of legal conflict between property owners and tenants.
       </p>
       <p>According to <a href=https://kclpure.kcl.ac.uk/portal/files/159767495/Plumbing_Poverty_in_US_Cities.pdf>a 2021 report by The Plumbing Poverty Project</a>, 
         in New York City alone, 65,000 residents are estimated to not have access to piped water. As you explore the map, consider this, and what it might mean for 
@@ -55,11 +61,12 @@
       </p>
       <br>
       <br>
-      <button onclick="update(data1)">Owner-Occupied Housing</button>
-      <button onclick="update(data2)">Renter-Occupied Housing</button>
-      <div>
-        <svg id="bar-chart" width="960" height="500"></svg>
-    </div>
+     <!- my plan is to have a button for two charts - still working on that -->
+     <!- <button onclick="update(data1)">Owner-Occupied Housing</button> -->
+     <!- <button onclick="update(data2)">Renter-Occupied Housing</button> -->
+     <!- <div> -->
+     <!-   <svg id="bar-chart" width="1000" height="500"></svg> -->
+   <!- </div> -->
     </div>
   
     <div id="Map" class="tabcontent">
@@ -71,7 +78,7 @@
   <div>
     <svg id="map" width="1200" height="1200"></svg>
   </div>
-  <div class="tooltip" style = "opacity: 0;"></div>
+  <div id="tooltip" style="position: absolute; display: none; background-color: white; padding: 5px; border: 1px solid black;"></div>
   <br>
   <br>
   <h6> Data source: <a href=https://data.census.gov/table?q=Water,+Sewage,+and+Plumbing+Facilities&t=Owner/Renter+(Householder)+Characteristics&g=050XX00US36005$1400000,36047$1400000,36061$1400000,36081$1400000,36085$1400000&y=2020&tid=ACSDT5Y2020.B25049>US Census Bureau</a></h6>
@@ -82,6 +89,37 @@
   <p>Please take a few minutes to fill out this reflection on the experience of this map. I will not share your answers outside of class.</p>
   <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSf8Mfls9xbudsLhlRUCUc0DD8PLiU0VytRG6cXzf7_hYSxU6Q/viewform?embedded=true" width="700" height="780" frameborder="1" marginheight="0" marginwidth="0">Loading…</iframe>
 </div>
+
+<div id="References" class="tabcontent">
+  <h3>References</h3>
+  <br>
+  <p><b>The following sources were used in this project.</b></p>
+  <br>
+  <p>Boehnert, J. (2016). Data visualisation does political things. DRS2016: Design+ research+ society: Future-focused thinking.</p>
+  <br>
+  <p>Deitz, S., & Meehan, K. (2019). Plumbing poverty: mapping hot spots of racial and geographic inequality in US household water insecurity. 
+    <i>Annals of the American Association of Geographers</i>, 109(4), 1092-1109.</p>
+  <br>
+  <p>Lake, R. W. (2017). Big Data, urban governance, and the ontological politics of hyperindividualism. <i>Big Data & Society</i>, 4(1),</p>
+  <br>
+  <p>Lakhani, N., Singh, M., and Kamal, R. (2021, March 27th). Almost half a million US households lack indoor plumbing: 'The conditions are inhumane'. The Guardian. 
+    https://www.theguardian.com/us-news/2021/sep/27/water-almost-half-million-us-households-lack-indoor-plumbing</p>
+  <br>
+  <p>NYC Department of Housing Preservation and Development. (2021). ACBs of Housing. https://www.nyc.gov/assets/hpd/downloads/pdfs/services/abcs-of-housing.pdf </p>
+  <br>
+  <p>Meehan, K., Jurjevich, J. R., Griswold, A., Chun, N. M. J. W., & Sherrill, J. (2021). Plumbing poverty in U.S. cities: A report on gaps and trends 
+    in household water access, 2000 to 2017. King's College London.</p>
+  <br>
+  <p>Rose, N., O'malley, P., & Valverde, M. (2006). Governmentality. <i>Annual Review of Law and Social Sciences</i>, 2, 83-104.</p>
+  <br>
+  <p>US Census Bureau (2020). American Community Survey: Selected Housing Characteristics. Five Year Estimate: 2015-2020 (Table B25049)</p>
+  <br>
+  <p>US Census Bureau (n.d.). Census Tracts. Geographic Products Branch. https://www2.census.gov/geo/pdfs/education/CensusTracts.pdf</p>
+  <br>
+  <p>Webber, N. R., Shawcross, M., Edwards, D., Reinsvold, R., & Zhen, J. C. (2020). Data (Mis) Visualization and its Impact on Academic Advancement and Public Understanding. 
+    [Panel]. Society for the Academic Study of Social Imagery, Greeley, CO, United States. https://digscholarship.unco.edu/sassi/4/</p>
+</div>
+
 
 
     <script src="../lib/d3.js"></script>
