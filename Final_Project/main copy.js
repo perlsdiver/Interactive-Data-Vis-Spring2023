@@ -11,7 +11,6 @@ const width = window.innerWidth * 0.9,
 /// TABS ///
 ////////////
 
-
 // Set the starting tab
 document.getElementById("Introduction").style.display = "block";
 document.querySelector(".tab button:first-child").classList.add("active");

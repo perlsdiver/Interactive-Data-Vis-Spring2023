@@ -1,6 +1,5 @@
 /// Going to annotate this more so I break it apart and make it more legible for me
 ///
-///
 
 /* CONSTANTS AND GLOBALS */
 const width = window.innerWidth * 0.9,
@@ -37,30 +36,104 @@ document.querySelector(".tab button:first-child").classList.add("active");
 /** these variables allow us to access anything we manipulate in
 * init() but need access to in draw().
 * All these variables are empty before we assign something to them.*/
-// let barsvg;
-// let mapsvg;
+
+let barsvg;
+let mapsvg;
+let colorScale;
+// let projection;
 
 //////////////////////////
 /// APPLICATION STATE ////
 /////////////////////////
 
-// let state = {
-//   NYC_tracts: null,
-//   plumbingData: null,
-//   barDat: null,
-//   hover:{
-//   },
-// };
+let state = {
+    NYC_tracts: null,
+    plumbingData: null,
+    barData: null,
+    hover:{
+
+    },
+  };
 
 //////////////////////////////////// ////////////////// 
 // loading data - multiple sets ////
 ///////////////////////////////////////////////////////
 
 Promise.all([
-  d3.json("../data/final/CensusTracts.json"), // json file taken from NYC Open Data
-  d3.csv("../data/final/CensusData.csv"), // census data, wrangled to be easier to read
-  d3.csv("../data/final/CensusDataBarChartSum.csv", d3.autType), // seperate file made of borough-level summary data, making it easier to render bar charts
-]).then(([NYC_tracts, plumbingData, barData]) => {
+  d3.json("finaldata/CensusTracts.json"), // json file taken from NYC Open Data
+  d3.csv("finaldata/CensusData.csv"), // census data, wrangled to be easier to read
+  d3.csv("finaldata/CensusDataBarChartSum.csv", d3.autType), // seperate file made of borough-level summary data, making it easier to render bar charts
+]).then(([NYCtracts, plumbingData, barData]) => {
+
+  state.NYCtracts = tracts;
+  state.plumbingData;
+  init();
+});
+  
+/// Initializing function
+
+function init(){
+
+  const projection = d3.geoMercator().fitSize([width, height], state.NYCtracts);
+  const path = d3.geoPath().projection(projection);
+
+console.log(state.NYCtracts.map(d => d.properties.GEOID)
+
+(NYCtracts, plumbingData, barData));
+
+  // Calculating the density for both "Owner_no_plumbing" and "Renter_no_plumbing" variables
+  // Will use this for map distribution
+  state.plumbingData.forEach(row => {
+    const totalOwner = row.Total_Owner;
+    const totalRenter = row.Total_Renter;
+    row.Owner_density = (row.Owner_no_plumbing / totalOwner) * 100;
+    row.Renter_density = (row.Renter_no_plumbing / totalRenter) * 100;
+  });
+
+  // Create color scales for both Owner and Renter density
+  const colorScaleOwner = d3.scaleSequential()
+    .domain(d3.extent(state.plumbingData, d => +d.Owner_density))
+    .interpolator(d3.interpolateBlues);
+
+  const colorScaleRenter = d3.scaleSequential()
+    .domain(d3.extent(state.plumbingData, d => +d.Renter_density))
+    .interpolator(d3.interpolateReds);
+
+  // Update the tracts data to include the plumbing data
+  state.tracts.features.forEach(feature => {
+    const tractId = feature.properties.GEOID;
+    const plumbingRow = state.plumbingData.find(d => d.GEOID === tractId);
+    if (plumbingRow) {
+      feature.properties.Owner_density = plumbingRow.Owner_density;
+      feature.properties.Renter_density = plumbingRow.Renter_density;
+    }
+  });
+
+
+// draw function
+function draw() {
+  // define svg
+  const mapsvg = d3.select("#map")
+    .append("mapsvg")
+    .attr("width", width)
+    .attr("height", height);
+
+  // const rect
+
+  // Add a framing border around the map
+  mapsvg.append("rect")
+    .attr("width", width)
+    .attr("height", height)
+    .attr("stroke", "black") // Border color
+    .attr("stroke-width", "2px") // Border width
+    .attr("fill", "none");
+
+}
+
+
+
+
+
 
 // ////////////////  
 // // BAR CHART (not working - commented out for now ///
@@ -184,8 +257,8 @@ dropdown.selectAll("option")
   .text(d => d.label);
 
 // Defining the projection and path generator
-const projection = d3.geoMercator().fitSize([width, height], NYC_tracts);
-const pathGenerator = d3.geoPath().projection(projection);
+// const projection = d3.geoMercator().fitSize([width, height], NYCtracts);
+// const pathGenerator = d3.geoPath().projection(projection);
 
   // Render the map
   g.selectAll("path")
@@ -196,4 +269,4 @@ const pathGenerator = d3.geoPath().projection(projection);
       .attr("stroke", "black")
       .attr("fill", "#F5F5DC");
 /////
-});
+};
